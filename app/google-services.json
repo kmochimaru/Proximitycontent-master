@@ -1,0 +1,94 @@
+{
+  "project_info": {
+    "project_number": "640643459641",
+    "firebase_url": "https://notification-2411a.firebaseio.com",
+    "project_id": "notification-2411a",
+    "storage_bucket": "notification-2411a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640643459641:android:a84569ff3465b498",
+        "android_client_info": {
+          "package_name": "com.estimote.proximitycontent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "640643459641-pomjnck54scevfq7cascq6c1rn0uv8f8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.estimote.proximitycontent",
+            "certificate_hash": "2fb7ecc41ef7b179b15c62e5a8f38bef0fbce1b3"
+          }
+        },
+        {
+          "client_id": "640643459641-ocst539tn1ujd173icefiddmejk6ujjg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.estimote.proximitycontent",
+            "certificate_hash": "d10e735771bf96e3083596b1ab73711a5d0bfb0c"
+          }
+        },
+        {
+          "client_id": "640643459641-aqnuvr0clbsqr1fbju28fbpf2dh83pvm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdkQKk7GDJrEQS55LWBmEmmPHMxvEz0ug"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "640643459641-aqnuvr0clbsqr1fbju28fbpf2dh83pvm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640643459641:android:5b3717d4cc7f3280",
+        "android_client_info": {
+          "package_name": "com.example.peepo.firebaseauthen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "640643459641-aqnuvr0clbsqr1fbju28fbpf2dh83pvm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdkQKk7GDJrEQS55LWBmEmmPHMxvEz0ug"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

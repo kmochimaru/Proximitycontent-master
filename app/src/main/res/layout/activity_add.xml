@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:paddingBottom="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:padding="5dp"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:layout_marginTop="10dp"
+        android:text="ชื่อกิจกรรม"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <EditText
+        android:nextFocusDown="@+id/description"
+        android:imeOptions="actionNext"
+        android:singleLine="true"
+        android:id="@+id/activity_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <requestFocus/>
+    </EditText>
+
+
+    <TextView
+        android:text="คำอธิบาย"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:padding="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:singleLine="true"
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="วัน / เวลา เริ่มกิจกรรม"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:textSize="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:singleLine="true"
+            android:layout_weight="1"
+            android:id="@+id/date_start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:singleLine="true"
+            android:layout_weight="1"
+            android:id="@+id/time_start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:text="วัน / เวลา สิ้นสุดกิจกรรม"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:textSize="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:singleLine="true"
+            android:layout_weight="1"
+            android:id="@+id/date_end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:singleLine="true"
+            android:layout_weight="1"
+            android:id="@+id/time_end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnChoose"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="choose" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</LinearLayout>
