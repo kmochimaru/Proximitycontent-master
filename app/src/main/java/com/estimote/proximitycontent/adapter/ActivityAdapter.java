@@ -5,8 +5,6 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -27,19 +25,11 @@ import com.estimote.proximitycontent.dialog.TimeDialog;
 import com.estimote.proximitycontent.listener.ItemClickListener;
 import com.estimote.proximitycontent.log.MyLog;
 import com.estimote.proximitycontent.model.ActivityModel;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.List;
-import java.util.UUID;
-
-import static android.app.Activity.RESULT_OK;
 
 
 public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ActivityViewHolder>{
@@ -52,18 +42,24 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
     private Boolean option;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    private Uri mImageUri;
-    final private int PICK_IMAGE_REQUEST = 71;
-    String uploadUrl = "";
-    FirebaseStorage storage;
-    StorageReference storageReference;
-    UploadTask mUploadTask;
+    // Call method in DetailActivity Class
+    private CallbackInterface mCallback;
+    public interface CallbackInterface{
+        void onHandleOpenFileChooser();
+        void onHandleEdit(ActivityModel acitivty, String id);
+    }
 
     public ActivityAdapter(boolean option, List<ActivityModel> items, Context context) {
         this.items = items;
         this.context = context;
         viewSnackBar = ((Activity)context).findViewById(R.id.myCoordinator);
         this.option = option;
+
+        try{
+            mCallback = (CallbackInterface) context;
+        }catch(ClassCastException ex){
+            Log.e("ActivityAdapter","Must implement the CallbackInterface in the Activity", ex);
+        }
     }
 
     @Override
@@ -183,7 +179,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
         btn_choose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openFileChooser();
+                mCallback.onHandleOpenFileChooser();
             }
         });
 
@@ -200,9 +196,6 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
                 .setPositiveButton("แก้ไข", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference myRef = database.getReference("activity");
 
                         String strActivityName = input_activity_name.getText().toString()==null?"":input_activity_name.getText().toString();
                         String strDateStart = input_date_start.getText().toString()==null?"":input_date_start.getText().toString();
@@ -229,12 +222,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
                                 strDescription.equals("")) {
                             Snackbar.make(viewSnackBar,"กรุณากรอกข้อมูลให้ครบ",Snackbar.LENGTH_SHORT).show();
                         }else{
-//                            uploadImage();
-                            MyLog myLog = new MyLog("Edit Activity", mAuth.getCurrentUser().getEmail());
-                            myLog.addLog();
-                            myRef.child(model.getId()).setValue(activity);
-                            Snackbar.make(viewSnackBar,"แก้ไขกิจกรรมสำเร็จ",Snackbar.LENGTH_SHORT).show();
-                            dialog.dismiss();
+                            mCallback.onHandleEdit(activity, model.getId());
                         }
                     }
                 })
@@ -310,43 +298,6 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
         }
     }
 
-    private void openFileChooser() {
-//        Intent intent = new Intent();
-//        intent.setType("image/*");
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        context.startActivity(intent);
-
-        Intent intent = new Intent(
-                Intent.ACTION_GET_CONTENT,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        ((Activity) context).startActivityForResult( Intent.createChooser(intent, "Select File"),PICK_IMAGE_REQUEST);
-        mImageUri = intent.getData();
-    }
-
-//    private String uploadImage() {
-//        uploadUrl = "";
-//        if (mImageUri != null) {
-//            StorageReference fileReference = storageReference.child("images/" + UUID.randomUUID().toString());
-//            fileReference.putFile(mImageUri)
-//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            uploadUrl = taskSnapshot.getDownloadUrl().toString();
-//                            Log.d("อัพโหลดรูปภาพสำเร็จ", uploadUrl);
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Log.d("อัพโหลดรูปภาพล้มเหลว", "" + e);
-//                        }
-//                    });
-//        } else {
-//            Snackbar.make(viewSnackBar, "No file selected", Snackbar.LENGTH_SHORT).show();
-//        }
-//        return uploadUrl;
-//    }
 
 }
 

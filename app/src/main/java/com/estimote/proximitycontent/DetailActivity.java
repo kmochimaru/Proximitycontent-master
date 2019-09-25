@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements ActivityAdapter.CallbackInterface {
 
     private RecyclerView rv;
     private List<ActivityModel> items;
@@ -298,20 +298,20 @@ public class DetailActivity extends AppCompatActivity {
 
     private String uploadImage() {
         uploadUrl = "";
-        if (mImageUri != null) {
+        if (this.mImageUri != null) {
             StorageReference fileReference = storageReference.child("images/" + UUID.randomUUID().toString());
-            fileReference.putFile(mImageUri)
+            fileReference.putFile(this.mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             uploadUrl = taskSnapshot.getDownloadUrl().toString();
-                            Log.d("อัพโหลดรูปภาพสำเร็จ", uploadUrl);
+                            Log.d("DebugUploadS", uploadUrl);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.d("อัพโหลดรูปภาพล้มเหลว", "" + e);
+                            Log.d("DebugUpload", "" + e);
                         }
                     });
         } else {
@@ -350,6 +350,42 @@ public class DetailActivity extends AppCompatActivity {
         super.onStop();
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    @Override
+    public void onHandleOpenFileChooser() {
+        openFileChooser();
+    }
+
+    @Override
+    public void onHandleEdit(final ActivityModel acitivty, final String id) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference("activity");
+
+        if (this.mImageUri != null) {
+            StorageReference fileReference = storageReference.child("images/" + UUID.randomUUID().toString());
+            fileReference.putFile(this.mImageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            uploadUrl = taskSnapshot.getDownloadUrl().toString();
+                            acitivty.setImage_url(uploadUrl);
+                            MyLog myLog = new MyLog("Edit Activity", mAuth.getCurrentUser().getEmail());
+                            myLog.addLog();
+                            myRef.child(id).setValue(acitivty);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("DebugUpload", "" + e);
+                        }
+                    });
+        } else {
+            MyLog myLog = new MyLog("Edit Activity", mAuth.getCurrentUser().getEmail());
+            myLog.addLog();
+            myRef.child(id).setValue(acitivty);
         }
     }
 }
