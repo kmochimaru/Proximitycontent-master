@@ -27,6 +27,16 @@ public class ActivityModel {
         this.description = description;
     }
 
+    public ActivityModel(String activity_name, String date_start, String date_end, String time_start, String time_end, String description, String image_url) {
+        this.activity_name = activity_name;
+        this.date_start = date_start;
+        this.date_end = date_end;
+        this.time_start = time_start;
+        this.time_end = time_end;
+        this.description = description;
+        this.image_url = image_url;
+    }
+
     public ActivityModel(String id, String activity_name, String date_start, String date_end, String time_start, String time_end, String description, String image_url) {
         this.id = id;
         this.activity_name = activity_name;

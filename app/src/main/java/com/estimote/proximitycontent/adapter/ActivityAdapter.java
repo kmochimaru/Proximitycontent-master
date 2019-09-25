@@ -5,13 +5,17 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -23,11 +27,19 @@ import com.estimote.proximitycontent.dialog.TimeDialog;
 import com.estimote.proximitycontent.listener.ItemClickListener;
 import com.estimote.proximitycontent.log.MyLog;
 import com.estimote.proximitycontent.model.ActivityModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.List;
+import java.util.UUID;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ActivityViewHolder>{
@@ -39,6 +51,13 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
     private View viewSnackBar;
     private Boolean option;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    private Uri mImageUri;
+    final private int PICK_IMAGE_REQUEST = 71;
+    String uploadUrl = "";
+    FirebaseStorage storage;
+    StorageReference storageReference;
+    UploadTask mUploadTask;
 
     public ActivityAdapter(boolean option, List<ActivityModel> items, Context context) {
         this.items = items;
@@ -114,6 +133,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
         final EditText input_time_start = mView.findViewById(R.id.time_start);
         final EditText input_date_end = mView.findViewById(R.id.date_end);
         final EditText input_time_end = mView.findViewById(R.id.time_end);
+        final Button btn_choose = mView.findViewById(R.id.btnChoose);
 
         //Event Date & Time Dialog
         input_date_start.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -160,6 +180,13 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
             }
         });
 
+        btn_choose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFileChooser();
+            }
+        });
+
         //Set Data EditText
         input_activity_name.setText(model.getActivity_name());
         input_description.setText(model.getDescription());
@@ -183,6 +210,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
                         String strTimeStart = input_time_start.getText().toString()==null?"":input_time_start.getText().toString();
                         String strTimeEnd = input_time_end.getText().toString()==null?"":input_time_end.getText().toString();
                         String strDescription = input_description.getText().toString()==null?"":input_description.getText().toString();
+                        String strUrlImage = model.getImage_url();
 
                         ActivityModel activity = new ActivityModel(
                                 strActivityName,
@@ -190,7 +218,8 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
                                 strDateEnd,
                                 strTimeStart,
                                 strTimeEnd,
-                                strDescription);
+                                strDescription,
+                                strUrlImage);
 
                         if(strActivityName.equals("") ||
                                 strDateStart.equals("") ||
@@ -200,6 +229,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
                                 strDescription.equals("")) {
                             Snackbar.make(viewSnackBar,"กรุณากรอกข้อมูลให้ครบ",Snackbar.LENGTH_SHORT).show();
                         }else{
+//                            uploadImage();
                             MyLog myLog = new MyLog("Edit Activity", mAuth.getCurrentUser().getEmail());
                             myLog.addLog();
                             myRef.child(model.getId()).setValue(activity);
@@ -279,6 +309,45 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
             return true;
         }
     }
+
+    private void openFileChooser() {
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        context.startActivity(intent);
+
+        Intent intent = new Intent(
+                Intent.ACTION_GET_CONTENT,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        ((Activity) context).startActivityForResult( Intent.createChooser(intent, "Select File"),PICK_IMAGE_REQUEST);
+        mImageUri = intent.getData();
+    }
+
+//    private String uploadImage() {
+//        uploadUrl = "";
+//        if (mImageUri != null) {
+//            StorageReference fileReference = storageReference.child("images/" + UUID.randomUUID().toString());
+//            fileReference.putFile(mImageUri)
+//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            uploadUrl = taskSnapshot.getDownloadUrl().toString();
+//                            Log.d("อัพโหลดรูปภาพสำเร็จ", uploadUrl);
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Log.d("อัพโหลดรูปภาพล้มเหลว", "" + e);
+//                        }
+//                    });
+//        } else {
+//            Snackbar.make(viewSnackBar, "No file selected", Snackbar.LENGTH_SHORT).show();
+//        }
+//        return uploadUrl;
+//    }
+
 }
 
 
