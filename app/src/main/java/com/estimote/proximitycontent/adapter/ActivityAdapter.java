@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.estimote.proximitycontent.R;
@@ -29,6 +30,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -41,6 +45,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
     private View viewSnackBar;
     private Boolean option;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
     // Call method in DetailActivity Class
     private CallbackInterface mCallback;
@@ -72,6 +77,21 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
         final ActivityModel model = items.get(position);
         holder.txt_activity_name.setText(model.getActivity_name());
         holder.txt_date_start.setText(model.getDate_start());
+        String dateStart = "";
+        String currentDate = "";
+        try {
+             dateStart = sdf.format(sdf.parse(model.getDate_start()));
+             currentDate = sdf.format(new Date());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        Log.d("Date", dateStart);
+        Log.d("Date", currentDate);
+        if(currentDate.compareTo(dateStart) > 0) {
+            holder.relativeLayout.setBackgroundResource(R.drawable.red_border);
+        }else {
+            holder.relativeLayout.setBackgroundResource(R.drawable.green_border);
+        }
 
         holder.setItemClickListener(new ItemClickListener() {
             @Override
@@ -268,6 +288,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
     class ActivityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
 
         TextView txt_activity_name, txt_date_start, textViewOptions;
+        RelativeLayout relativeLayout;
         private ItemClickListener itemClickListener;
 
         public ActivityViewHolder(final View itemView){
@@ -275,6 +296,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
             txt_activity_name = itemView.findViewById(R.id.txt_activity_name);
             txt_date_start = itemView.findViewById(R.id.txt_date_start);
             textViewOptions = itemView.findViewById(R.id.textViewOptions);
+            relativeLayout = itemView.findViewById(R.id.relativeLayout);
             if(option == true)textViewOptions.setVisibility(View.VISIBLE);
             else textViewOptions.setVisibility(View.INVISIBLE);
 
