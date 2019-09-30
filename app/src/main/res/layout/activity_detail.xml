@@ -53,16 +53,14 @@
                     android:layout_height="wrap_content"
                     android:text="*สีเขียวคือกิจกรรมที่ยังไม่ได้ดำเนินการ"
                     android:textSize="16dp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"/>
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="*สีแดงคือกิจกรรมที่ดำเนินการสำเร็จไปแล้ว"
                     android:textSize="16dp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"/>
+                    android:textColor="@color/black"/>
             </LinearLayout>
 
         </RelativeLayout>
