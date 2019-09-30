@@ -75,23 +75,21 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
     @Override
     public void onBindViewHolder(final ActivityViewHolder holder, int position) {
         final ActivityModel model = items.get(position);
-        holder.txt_activity_name.setText(model.getActivity_name());
-        holder.txt_date_start.setText(model.getDate_start());
         String dateStart = "";
         String currentDate = "";
         try {
              dateStart = sdf.format(sdf.parse(model.getDate_start()));
              currentDate = sdf.format(new Date());
+             holder.txt_activity_name.setText(model.getActivity_name());
+             holder.txt_date_start.setText(dateStart);
         }catch (Exception e){
-            e.printStackTrace();
+             e.printStackTrace();
         }
-        Log.d("Date", dateStart);
-        Log.d("Date", currentDate);
-        if(currentDate.compareTo(dateStart) > 0) {
-            holder.relativeLayout.setBackgroundResource(R.drawable.red_border);
-        }else {
-            holder.relativeLayout.setBackgroundResource(R.drawable.green_border);
-        }
+//        if(currentDate.compareTo(dateStart) > 0) {
+//            holder.relativeLayout.setBackgroundResource(R.drawable.red_border);
+//        }else {
+//            holder.relativeLayout.setBackgroundResource(R.drawable.green_border);
+//        }
 
         holder.setItemClickListener(new ItemClickListener() {
             @Override
