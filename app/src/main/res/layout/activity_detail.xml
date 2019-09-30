@@ -8,25 +8,64 @@
     android:id="@+id/myCoordinator"
     tools:context="com.estimote.proximitycontent.DetailActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:orientation="vertical"
+        <RelativeLayout
+            android:padding="10dp"
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+           <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ผู้ดูแลระบบกิจกรรมสาขาวิศวกรรมคอมพิวเตอร์"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"/>
+
             <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="70dp"
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-        </LinearLayout>
+            <LinearLayout
+                android:paddingLeft="3dp"
+                android:layout_alignParentBottom="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="หมายเหตุ"
+                    android:textSize="16dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="*สีเขียวคือกิจกรรมที่ยังไม่ได้ดำเนินการ"
+                    android:textSize="16dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="*สีแดงคือกิจกรรมที่ดำเนินการสำเร็จไปแล้ว"
+                    android:textSize="16dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+        </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_activity"
